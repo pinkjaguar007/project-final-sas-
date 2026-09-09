@@ -291,12 +291,13 @@ function Buyaticket() {
 
     let name = prompt("enter you name ")
     let tripid = Number(prompt("enter the trip ID "))
-
+    name = name.toLowerCase()
 
 
     for (let i = 0; i < trips.length; i++) {
 
         if (trips[i].id === tripid) {
+
             // here we compare if the trip id exist 
 
             if (trips[i].availableSeats > 0) {
@@ -387,3 +388,74 @@ function Showtickets() {
 
 }
 
+function Cancelaticket() {
+
+    let ticketid = Number(prompt("enter the ticket ID to cancel it "))
+
+    for (let i = 0; i < tickets.length; i++) {
+
+        if (tickets[i].id === ticketid) {
+
+            // here we compare if the ticket id exist   
+            console.log("ticket found")
+
+
+            // here we loop through the trips array to find the trip id of the ticket to increment the available seats by 1
+
+
+            for (let j = 0; j < trips.length; j++) {
+                if (trips[j].id === tickets[i].tripID)
+
+                // here we compare if the trip id of the ticket exist in the trips array to increment the available seats by 1
+                {
+                    trips[j].availableSeats++;
+
+                    // here we increment the available seats by 1 for the trip of the ticket
+
+                    console.log("ticket canceled")
+                    tickets.splice(i, 1);
+                    break;
+                }
+            }
+        }
+
+    }
+}
+
+function Searchforaticket() {
+
+    let name = prompt("enter the ticket name to search for it ")
+    name = name.toLowerCase()
+
+    for (let i = 0; i < tickets.length; i++) {
+
+        if (tickets[i].name === name) {
+            console.log("ticket found")
+            console.log(tickets[i])
+
+        }
+        else {
+            console.log("ticket not found")
+        }
+    }
+}
+
+function Filtertrips() {
+
+    let departurecity = prompt("enter departure city")
+
+    for (let i = 0; i < trips.length; i++) {
+
+        if (trips[i].departure === departurecity) {
+
+            console.log(trips[i].departure)
+            console.log(trips[i].destination)
+            console.log(trips[i].price)
+
+        }
+
+    }
+
+
+
+}
