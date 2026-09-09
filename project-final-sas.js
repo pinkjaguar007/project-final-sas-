@@ -2,7 +2,7 @@
 var prompt = require('prompt-sync')();
 
 const tickets = []
-
+let nextticketid = 0
 const trips = [
     {
         id: 1,
@@ -283,15 +283,75 @@ function Showtrips() {
 function Buyaticket() {
 
     let name = prompt("enter you name ")
-    let ticketid = Number(prompt("enter the trip ID "))
+    let tripid = Number(prompt("enter the trip ID "))
 
-    
+
 
     for (let i = 0; i < trips.length; i++) {
 
-        if (trips[i].id === ticketid) {
+        if (trips[i].id === tripid) {
+            // here we compare if the trip id exist 
 
-         if ( trips[i].availableSeats > 0 )
+            if (trips[i].availableSeats > 0) {
+
+
+                // here we check if there is any available seats 
+
+
+                let seatNumber = 50 - trips[i].availableSeats + 1;
+
+                // here we calculate the seat number by subtracting the available 
+                // seats from 50 and adding 1 for the new seat
+
+
+                nextticketid++;
+
+
+                // here we decrement the available seats by 1 for the new ticket
+
+
+                trips[i].availableSeats--;
+                // here we decrement the available seats by 1 for the new ticket
+
+
+                //this is for the seats we have 50 - 50 which is = 0 + 1 for the new seat 
+
+
+                let ticket = {
+
+
+                    id: nextticketid,
+                    name: name,
+                    tripID: trips[i].id,
+                    seatNumber: seatNumber,
+                    price: trips[i].price,
+                    destination: trips[i].destination,
+                    departure: trips[i].departure,
+                    departureTime: trips[i].departureTime,
+                    arrivalTime: trips[i].arrivalTime
+
+
+                   // here we create a new ticket object with the infos of the trip and the user input
+            
+
+                }
+                tickets.push(ticket)
+
+                console.log("ticket created")
+                console.log({ ticket })
+
+
+
+
+
+
+
+
+
+            }
+
+
+
 
 
 
@@ -300,7 +360,7 @@ function Buyaticket() {
 
         }
 
-        
+
 
 
     }
@@ -308,6 +368,7 @@ function Buyaticket() {
 
 
 }
+
 
 
 
