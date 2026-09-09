@@ -187,8 +187,6 @@ const trips = [
 ];
 
 
-
-
 //RAILWAY MANAGER
 // =================================
 
@@ -268,9 +266,18 @@ while (ongoing) {
 function Showtrips() {
 
 
+    // here we loop through the trips array to display all the trips with their id number
+
 
     for (let i = 0; i < trips.length; i++) {
-        console.log(trips[i].id);
+        console.log("ID : " + trips[i].id);
+        console.log("Departure : " + trips[i].departure);
+        console.log("Destination : " + trips[i].destination);
+        console.log("Departure Time : " + trips[i].departureTime);
+        console.log("Arrival Time : " + trips[i].arrivalTime);
+        console.log("Price : " + trips[i].price);
+        console.log("Available Seats : " + trips[i].availableSeats);
+        console.log("-----------------------------");
     }
 
 
@@ -331,44 +338,52 @@ function Buyaticket() {
                     arrivalTime: trips[i].arrivalTime
 
 
-                   // here we create a new ticket object with the infos of the trip and the user input
-            
+                    // here we create a new ticket object with the infos of the trip and the user input
 
                 }
+
                 tickets.push(ticket)
 
                 console.log("ticket created")
                 console.log({ ticket })
 
+                // here we push the new ticket to the tickets array and display it
 
+            } else if (trips[i].availableSeats === 0) {
 
+                console.log(" no available seats for this trip")
 
+                if (trips[i].id !== tripid) {
 
-
-
-
+                    console.log("sorry this trip id does not exist")
+                }
 
             }
 
-
-
-
-
-
-
-
-
         }
 
+    }
+
+}
+//after buying this is option 3 to show all bought tickets 
+
+function Showtickets() {
 
 
+    // here we loop through the tickets array to display all the tickets with their infos
+    for (let i = 0; i < tickets.length; i++) {
+        console.log("ID :" + tickets[i].id);
+        console.log("name :" + tickets[i].name);
+        console.log("tripID :" + tickets[i].tripID);
+        console.log("seatNumber :" + tickets[i].seatNumber);
+        console.log("price :" + tickets[i].price);
+        console.log("destination :" + tickets[i].destination);
+        console.log("departure :" + tickets[i].departure);
+        console.log("departureTime :" + tickets[i].departureTime);
+        console.log("arrivalTime :" + tickets[i].arrivalTime);
 
     }
 
 
-
 }
-
-
-
 
