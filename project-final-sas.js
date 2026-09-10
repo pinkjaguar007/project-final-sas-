@@ -292,18 +292,24 @@ function Buyaticket() {
     let name = prompt("enter you name ")
     let tripid = Number(prompt("enter the trip ID "))
     name = name.toLowerCase()
-
+    let tripID = false
 
     for (let i = 0; i < trips.length; i++) {
 
-        if (trips[i].id === tripid) {
 
+
+        if (trips[i].id == tripid) {
+
+            tripID = true
             // here we compare if the trip id exist 
 
+            console.log("yes this trip id exist")
+
+            // here we check if there is any available seats
             if (trips[i].availableSeats > 0) {
 
 
-                // here we check if there is any available seats 
+                console.log("yes there is an available seat")
 
 
                 let seatNumber = 50 - trips[i].availableSeats + 1;
@@ -346,23 +352,41 @@ function Buyaticket() {
                 tickets.push(ticket)
 
                 console.log("ticket created")
-                console.log({ ticket })
+                console.log({ ticket })// we print the ticket to the user
 
-                // here we push the new ticket to the tickets array and display it
+                // // here we push the new ticket to the tickets array and display it
 
-            } else if (trips[i].availableSeats === 0) {
 
-                console.log(" no available seats for this trip")
-
-                if (trips[i].id !== tripid) {
-
-                    console.log("sorry this trip id does not exist")
-                }
 
             }
 
+
+            else if (trips[i].availableSeats === 0) {
+
+                console.log(" no available seats for this trip")
+
+                // if there is no available saets " no available seat for this trip will be printed to the user "
+
+            }
+
+
+
+
+
         }
 
+    }
+
+
+
+    if (tripID) {
+        console.log("trip id exist")
+
+
+    }
+    else {
+
+        console.log("trip id doesnt exist")
     }
 
 }
@@ -466,10 +490,11 @@ function Sorttrips() {
 
         for (let j = 0; j < trips.length - 1 - i; j++) {
 
-            if (trips[j].price > trips[j + 1].price) {
+            if (trips[j].price > trips[j + 1].price); {
                 let temp = trips[j]
                 trips[j] = trips[j + 1]
                 temp = trips[j + 1]
+                console.log(trips[j + 1]);
 
             }
 
