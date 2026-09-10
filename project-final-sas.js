@@ -1,7 +1,120 @@
 
 var prompt = require('prompt-sync')();
 
-const tickets = []
+const canceledSeats = []
+const tickets = [ {
+        id: 1,
+        name: "ahmed",
+        tripID: 1,
+        seatNumber: 1,
+        price: 25,
+        destination: "Youssoufia",
+        departure: "Safi",
+        departureTime: "07:30",
+        arrivalTime: "08:30"
+    },
+    {
+        id: 2,
+        name: "fatima",
+        tripID: 1,
+        seatNumber: 2,
+        price: 25,
+        destination: "Youssoufia",
+        departure: "Safi",
+        departureTime: "07:30",
+        arrivalTime: "08:30"
+    },
+    {
+        id: 3,
+        name: "youssef",
+        tripID: 2,
+        seatNumber: 1,
+        price: 90,
+        destination: "Marrakech",
+        departure: "Safi",
+        departureTime: "08:00",
+        arrivalTime: "10:30"
+    },
+    {
+        id: 4,
+        name: "khadija",
+        tripID: 2,
+        seatNumber: 2,
+        price: 90,
+        destination: "Marrakech",
+        departure: "Safi",
+        departureTime: "08:00",
+        arrivalTime: "10:30"
+    },
+    {
+        id: 5,
+        name: "omar",
+        tripID: 3,
+        seatNumber: 1,
+        price: 140,
+        destination: "Casablanca",
+        departure: "Safi",
+        departureTime: "09:00",
+        arrivalTime: "13:00"
+    },
+    {
+        id: 6,
+        name: "sara",
+        tripID: 3,
+        seatNumber: 2,
+        price: 140,
+        destination: "Casablanca",
+        departure: "Safi",
+        departureTime: "09:00",
+        arrivalTime: "13:00"
+    },
+    {
+        id: 7,
+        name: "yassine",
+        tripID: 4,
+        seatNumber: 1,
+        price: 65,
+        destination: "Marrakech",
+        departure: "Youssoufia",
+        departureTime: "09:15",
+        arrivalTime: "11:00"
+    },
+    {
+        id: 8,
+        name: "nour",
+        tripID: 4,
+        seatNumber: 2,
+        price: 65,
+        destination: "Marrakech",
+        departure: "Youssoufia",
+        departureTime: "09:15",
+        arrivalTime: "11:00"
+    },
+    {
+        id: 9,
+        name: "hamza",
+        tripID: 5,
+        seatNumber: 1,
+        price: 110,
+        destination: "Casablanca",
+        departure: "Youssoufia",
+        departureTime: "10:00",
+        arrivalTime: "13:30"
+    },
+    {
+        id: 10,
+        name: "salma",
+        tripID: 5,
+        seatNumber: 2,
+        price: 110,
+        destination: "Casablanca",
+        departure: "Youssoufia",
+        departureTime: "10:00",
+        arrivalTime: "13:30"
+    }
+
+
+]
 let nextticketid = 0
 const trips = [
     {
@@ -201,6 +314,7 @@ const trips = [
 //Your choice:
 //*
 
+
 // here is the function to call the menu everytime 
 
 function showmenu() {
@@ -261,6 +375,7 @@ while (ongoing) {
 }
 
 
+
 // function show trips
 
 function Showtrips() {
@@ -283,6 +398,8 @@ function Showtrips() {
 
 }
 
+
+
 // function to let the user buy a ticket by adding his name and choosing which trip does he need BY trip id 
 // so we go through the loop to access the array then we do trips[i].id === ticket id 
 // to access the id number from the object inside the array to compare if it does exist 
@@ -301,6 +418,7 @@ function Buyaticket() {
         if (trips[i].id == tripid) {
 
             tripID = true
+
             // here we compare if the trip id exist 
 
             console.log("yes this trip id exist")
@@ -308,25 +426,45 @@ function Buyaticket() {
             // here we check if there is any available seats
             if (trips[i].availableSeats > 0) {
 
+            
+                //  look for a canceled seat taht belongs THIS trip
 
-                console.log("yes there is an available seat")
+
+                let reused = -1;
+                for (let k = 0; k < canceledSeats.length; k++) {
+                    if (canceledSeats[k].tripID === tripid) {
+                        reused = k;
+                        break;
+                    }
+                }
+
+                if (reused !== -1) {
+                    //found one a cnaceled seat reuse it
+
+                    seatNumber = canceledSeats[reused].seatNumber;
+                    canceledSeats.splice(reused, 1);
 
 
-                let seatNumber = 50 - trips[i].availableSeats + 1;
 
-                // here we calculate the seat number by subtracting the available 
-                // seats from 50 and adding 1 for the new seat
+
+                    // remove it from the pool so it's only handed out once
+
+
+                } else {
+                    // no canceled saets get  back to the normal formula
+
+
+
+                    seatNumber = 50 - trips[i].availableSeats + 1;
+                }
+
+
 
 
                 nextticketid++;
-
-
                 // here we decrement the available seats by 1 for the new ticket
-
-
                 trips[i].availableSeats--;
                 // here we decrement the available seats by 1 for the new ticket
-
 
                 //this is for the seats we have 50 - 50 which is = 0 + 1 for the new seat 
 
@@ -355,6 +493,8 @@ function Buyaticket() {
                 console.log({ ticket })// we print the ticket to the user
 
                 // // here we push the new ticket to the tickets array and display it
+
+
 
 
 
@@ -420,21 +560,34 @@ function Cancelaticket() {
 
         if (tickets[i].id === ticketid) {
 
-            // here we compare if the ticket id exist   
+            // here we compare if the ticket id exist 
+               ticketFound = true;
             console.log("ticket found")
+            
 
 
             // here we loop through the trips array to find the trip id of the ticket to increment the available seats by 1
 
 
             for (let j = 0; j < trips.length; j++) {
-                if (trips[j].id === tickets[i].tripID)
 
-                // here we compare if the trip id of the ticket exist in the trips array to increment the available seats by 1
+                if (trips[j].id === tickets[i].tripID) 
+
+                
+
+                // here we compare if the trip id of the ticket exist in the trips array 
+                // to increment the available seats by 1
+                // its like we check the id of the trip mathces the trip id on the ticket   
                 {
                     trips[j].availableSeats++;
 
-                    // here we increment the available seats by 1 for the trip of the ticket
+                    // here we increment the available seats by 1 for the trip of the ticket to 
+                    // be canceled for the new ticket to be created
+                     
+                    canceledSeats.push({ tripID: tickets[i].tripID, seatNumber: tickets[i].seatNumber })
+
+                     // remember this exact seat is now free, for this exact trip
+                     // so we push the trip id and the seat number to the canceledSeats array to keep track of the canceled seats
 
                     console.log("ticket canceled")
                     tickets.splice(i, 1);
@@ -443,8 +596,21 @@ function Cancelaticket() {
             }
         }
 
+     if (!ticketFound) {
+        console.log("ticket not found")
+
     }
+
+
+    }
+
+        
+
+
 }
+
+
+
 
 function Searchforaticket() {
 
@@ -490,7 +656,7 @@ function Sorttrips() {
 
         for (let j = 0; j < trips.length - 1 - i; j++) {
 
-            if (trips[j].price > trips[j + 1].price); {
+            if (trips[j].price > trips[j + 1].price) {
                 let temp = trips[j]
                 trips[j] = trips[j + 1]
                 temp = trips[j + 1]
@@ -501,3 +667,12 @@ function Sorttrips() {
         }
     }
 }
+
+
+
+
+
+
+
+
+
