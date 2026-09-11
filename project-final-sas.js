@@ -411,14 +411,17 @@ const trips = [
     }
 ];
 
-
-
 // here is an array to store the canceled seats with their trip id and seat number
 const canceledSeats = []
 
 // here is a variable to store the highest ticket id in the tickets array
+
 let highestId = 0;
 for (let i = 0; i < tickets.length; i++) {
+
+    // we loop through the tickets array to find the highest ticket id in the tickets array
+
+
     if (tickets[i].id > highestId) {
         highestId = tickets[i].id;
     }
@@ -581,8 +584,8 @@ function Buyaticket() {
                     seatNumber = canceledSeats[reused].seatNumber;
 
                     canceledSeats.splice(reused, 1);
+                    // we remove the canceled seat from the canceledSeats array so it won't be reused again
 
-                    // remove it from the pool so it's only handed out once
 
                 } else {
                     // no canceled saets get  back to the normal formula 
@@ -591,7 +594,9 @@ function Buyaticket() {
                 }
 
 
-                nextticketid++;
+                nextticketid++;   //the next ticket id will be the highest ticket id + 1
+
+
                 // here we decrement the available seats by 1 for the new ticket
                 trips[i].availableSeats--;
                 // here we decrement the available seats by 1 for the new ticket
@@ -686,7 +691,8 @@ function Showtickets() {
 function Cancelaticket() {
 
     let ticketid = Number(prompt("enter the ticket ID to cancel it "))
-    let ticketFound = false
+
+    let ticketFound = false // here we create a variable to check if the ticket id exist in the tickets array or not
 
     for (let i = 0; i < tickets.length; i++) {
 
@@ -719,6 +725,7 @@ function Cancelaticket() {
                     canceledSeats.push({ tripID: tickets[i].tripID, seatNumber: tickets[i].seatNumber })
 
                     // remember this exact seat is now free, for this exact trip
+
                     // so we push the trip id and the seat number to the canceledSeats array to keep track of the canceled seats
 
                     console.log("ticket canceled")
@@ -753,7 +760,7 @@ function Searchforaticket() {
 
         if (tickets[i].name === name) {
             console.log("ticket found")
-            console.log(tickets[i])
+            console.log(tickets[i].id)
 
         }
         else {
@@ -830,6 +837,7 @@ function Statistics() {
         }
     }
 
+    // find the trip with the highest count
     let bestTripId = null;
     let bestCount = 0;
     for (let id in countByTrip) {
@@ -838,7 +846,7 @@ function Statistics() {
             bestTripId = Number(id);
         }
     }
-
+    // display the best-selling trip
     for (let i = 0; i < trips.length; i++) {
         if (trips[i].id === bestTripId) {
             console.log("Best-selling trip: ")
