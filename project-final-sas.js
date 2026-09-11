@@ -2,6 +2,22 @@
 var prompt = require('prompt-sync')();
 
 
+
+// here is a variable to store the next ticket id to be created
+let highestId = 0;
+for (let i = 0; i < tickets.length; i++) {
+    if (tickets[i].id > highestId) {
+        highestId = tickets[i].id;
+    }
+}
+
+
+let nextticketid = highestId;
+
+let nextticketid = 0
+
+// here is an array to store the tickets with their infos
+
 const tickets = [
     {
         id: 1,
@@ -224,7 +240,7 @@ const tickets = [
         arrivalTime: "16:45"
     }
 ]
-
+// here is an array to store the trips with their infos
 
 const trips = [
     {
@@ -409,8 +425,10 @@ const trips = [
     }
 ];
 
+// here is an array to store the canceled seats with their trip id and seat number
 const canceledSeats = []
-let nextticketid = 0
+
+
 //RAILWAY MANAGER
 // =================================
 
@@ -570,7 +588,7 @@ function Buyaticket() {
                     // remove it from the pool so it's only handed out once
 
                 } else {
-                    // no canceled saets get  back to the normal formula
+                    // no canceled saets get  back to the normal formula 
 
                     seatNumber = 50 - trips[i].availableSeats + 1;
                 }
