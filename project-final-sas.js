@@ -2,20 +2,6 @@
 var prompt = require('prompt-sync')();
 
 
-
-// here is a variable to store the next ticket id to be created
-let highestId = 0;
-for (let i = 0; i < tickets.length; i++) {
-    if (tickets[i].id > highestId) {
-        highestId = tickets[i].id;
-    }
-}
-
-
-let nextticketid = highestId;
-
-let nextticketid = 0
-
 // here is an array to store the tickets with their infos
 
 const tickets = [
@@ -425,9 +411,20 @@ const trips = [
     }
 ];
 
+
+
 // here is an array to store the canceled seats with their trip id and seat number
 const canceledSeats = []
 
+// here is a variable to store the highest ticket id in the tickets array
+let highestId = 0;
+for (let i = 0; i < tickets.length; i++) {
+    if (tickets[i].id > highestId) {
+        highestId = tickets[i].id;
+    }
+}
+
+let nextticketid = highestId;
 
 //RAILWAY MANAGER
 // =================================
@@ -794,15 +791,17 @@ function Sorttrips() {
             if (trips[j].price > trips[j + 1].price) {
                 let temp = trips[j]
                 trips[j] = trips[j + 1]
-                temp = trips[j + 1]
-                console.log(trips[j + 1]);
-
+                trips[j + 1] = temp
             }
 
         }
     }
-}
 
+    for (let i = 0; i < trips.length; i++) {
+        console.log(trips[i].departure + " -> " + trips[i].destination + " : " + trips[i].price + " DH")
+    }
+
+}
 
 
 
