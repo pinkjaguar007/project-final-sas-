@@ -803,6 +803,51 @@ function Sorttrips() {
 
 }
 
+function Statistics() {
+
+    // 1. Total number of tickets sold
+    console.log("Total number of tickets: " + tickets.length)
+
+    // 2. Total revenue
+    let totalRevenue = 0;
+    for (let i = 0; i < tickets.length; i++) {
+        totalRevenue += tickets[i].price;
+    }
+    console.log("Total revenue: " + totalRevenue + " DH")
+
+    if (tickets.length === 0) {
+        return;
+    }
+
+    // 3. Best-selling trip
+    let countByTrip = {};
+    for (let i = 0; i < tickets.length; i++) {
+        let id = tickets[i].tripID;
+        if (countByTrip[id]) {
+            countByTrip[id]++;
+        } else {
+            countByTrip[id] = 1;
+        }
+    }
+
+    let bestTripId = null;
+    let bestCount = 0;
+    for (let id in countByTrip) {
+        if (countByTrip[id] > bestCount) {
+            bestCount = countByTrip[id];
+            bestTripId = Number(id);
+        }
+    }
+
+    for (let i = 0; i < trips.length; i++) {
+        if (trips[i].id === bestTripId) {
+            console.log("Best-selling trip: ")
+            console.log(trips[i].departure + " -> " + trips[i].destination)
+            console.log(bestCount + " tickets sold")
+        }
+    }
+
+}
 
 
 
