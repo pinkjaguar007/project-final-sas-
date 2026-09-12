@@ -1,8 +1,7 @@
 
 var prompt = require('prompt-sync')();
 
-
-// here is an array to store the tickets with their infos
+// here is an array to store the tickets with their information
 
 const tickets = [
     {
@@ -226,7 +225,7 @@ const tickets = [
         arrivalTime: "16:45"
     }
 ]
-// here is an array to store the trips with their infos
+// here is an array to store the trips with their information
 
 const trips = [
     {
@@ -411,30 +410,25 @@ const trips = [
     }
 ];
 
-// here is an array to store the canceled seats with their trip id and seat number
-const canceledSeats = []
-
-// here is a variable to store the highest ticket id in the tickets array
-
-
+// here we count the sample tickets so the available seats are correct
 for (let i = 0; i < tickets.length; i++) {
     for (let j = 0; j < trips.length; j++) {
         if (tickets[i].tripID === trips[j].id) {
             trips[j].availableSeats--;
-
-            // here we decrement the available seats by 1 for each ticket that has been bought for this trip
-            // so we loop through the tickets array and the trips array to find the trip id of the ticket and decrement the available seats by 1 for that trip
             break;
         }
     }
 }
 
+// here is an array to store the canceled seats with their trip id and seat number
+const canceledSeats = []
+
+// here is a variable to store the highest ticket id in the tickets array
 
 let highestId = 0;
 for (let i = 0; i < tickets.length; i++) {
 
     // we loop through the tickets array to find the highest ticket id in the tickets array
-
 
     if (tickets[i].id > highestId) {
         highestId = tickets[i].id;
@@ -457,8 +451,7 @@ let nextticketid = highestId;
 //Your choice:
 //*
 
-
-// here is the function to call the menu everytime 
+// here is the function to call the menu every time 
 
 function showmenu() {
     console.log("\n=================================");
@@ -482,7 +475,7 @@ let ongoing = true
 while (ongoing) {
 
     showmenu();
-    const choice = prompt("Your choice: ");
+    const choice = prompt("Your choice: ").trim();
 
     switch (choice) {
         case "1":
@@ -510,23 +503,19 @@ while (ongoing) {
             Statistics();
             break;
         case "0":
-            console.log("\ngood bye!");
+            console.log("\nGoodbye!");
             ongoing = false;
             break;
         default:
-
+            console.log("Invalid choice. Enter a number from 0 to 8.");
     }
 }
-
-
 
 // function show trips
 
 function Showtrips() {
 
-
     // here we loop through the trips array to display all the trips with their id number
-
 
     for (let i = 0; i < trips.length; i++) {
         console.log("ID : " + trips[i].id);
@@ -539,10 +528,7 @@ function Showtrips() {
         console.log("-----------------------------");
     }
 
-
 }
-
-
 
 // function to let the user buy a ticket by adding his name and choosing which trip does he need BY trip id 
 // so we go through the loop to access the array then we do trips[i].id === ticket id 
@@ -550,38 +536,39 @@ function Showtrips() {
 
 function Buyaticket() {
 
-    let name = prompt("enter you name ")
-    let tripid = Number(prompt("enter the trip ID "))
-    name = name.toLowerCase()
+    let name = prompt("Enter your name: ").trim();
+    if (name === "") {
+        console.log("Name cannot be empty.");
+        return;
+    }
+    let tripid = Number(prompt("Enter the trip ID: "));
+    if (!Number.isInteger(tripid) || tripid <= 0) {
+        console.log("Trip ID must be a positive whole number.");
+        return;
+    }
+    name = name.toLowerCase();
+    let seatNumber;
     let tripID = false
 
     for (let i = 0; i < trips.length; i++) {
-
-
 
         if (trips[i].id === tripid) {
 
             tripID = true
 
-            // here we compare if the trip id exist and its actully exist in the trips array 
-
-            console.log("yes this trip id exist")
+            // here we compare if the trip ID exists and its actually exist in the trips array 
 
             // here we check if there is any available seats
 
             if (trips[i].availableSeats > 0) {
 
-
-                //  look for a canceled seat taht belongs THIS trip
-
+                //  look for a canceled seat that belongs to this trip
 
                 let reused = -1;
 
                 // we loop through the canceled seats array to find if there is any canceled seat that belongs to this trip
 
-
                 for (let k = 0; k < canceledSeats.length; k++) {
-
 
                     if (canceledSeats[k].tripID === tripid) {
 
@@ -594,34 +581,28 @@ function Buyaticket() {
 
                 if (reused !== -1) {
 
-                    //found one a cnaceled seat reuse it
+                    //found one a canceled seat reuse it
 
                     seatNumber = canceledSeats[reused].seatNumber;
 
                     canceledSeats.splice(reused, 1);
                     // we remove the canceled seat from the canceledSeats array so it won't be reused again
 
-
                 } else {
-                    // no canceled saets get  back to the normal formula 
+                    // no canceled seats get  back to the normal formula 
 
                     seatNumber = 50 - trips[i].availableSeats + 1;
                 }
 
-
                 nextticketid++;   //the next ticket id will be the highest ticket id + 1
 
-
                 // here we decrement the available seats by 1 for the new ticket
-
                 trips[i].availableSeats--;
-
                 // here we decrement the available seats by 1 for the new ticket
+
                 //this is for the seats we have 50 - 50 which is = 0 + 1 for the new seat 
 
-
                 let ticket = {
-
 
                     id: nextticketid,
                     name: name,
@@ -633,105 +614,90 @@ function Buyaticket() {
                     departureTime: trips[i].departureTime,
                     arrivalTime: trips[i].arrivalTime
 
-
-                    // here we create a new ticket object with the infos of the trip and the user input
+                    // here we create a new ticket object with the information of the trip and the user input
 
                 }
 
                 tickets.push(ticket)
 
-                console.log("ticket created")
-                console.log({ ticket })// we print the ticket to the user
+                console.log("Ticket created.");
+                details(ticket);// we print the ticket to the user
 
                 // // here we push the new ticket to the tickets array and display it
 
-
-
-
-
             }
-
 
             else if (trips[i].availableSeats === 0) {
 
                 console.log(" no available seats for this trip")
 
-                // if there is no available saets " no available seat for this trip will be printed to the user "
+                // if there is no available seats " no available seat for this trip will be printed to the user "
 
             }
-
-
-
-
 
         }
 
     }
 
-
-
-    if (tripID) {
-        console.log("trip id exist")
-
-
-    }
-    else {
-
-        console.log("trip id doesnt exist")
+    if (!tripID) {
+        console.log("Trip not found.");
     }
 
 }
 
 //after buying this is option 3 to show all bought tickets 
 
+// here we print one ticket with labels instead of a raw object
+function details(ticket) {
+    console.log("Ticket #" + ticket.id);
+    console.log("Passenger: " + ticket.name);
+    console.log("Trip ID: " + ticket.tripID);
+    console.log("Trip: " + ticket.departure + " -> " + ticket.destination);
+    console.log("Departure time: " + ticket.departureTime);
+    console.log("Arrival time: " + ticket.arrivalTime);
+    console.log("Seat: " + ticket.seatNumber);
+    console.log("Price: " + ticket.price + " DH");
+    console.log("-----------------------------");
+}
+
 function Showtickets() {
-
-
-    // here we loop through the tickets array to display all the tickets with their infos
-    for (let i = 0; i < tickets.length; i++) {
-        console.log("ID :" + tickets[i].id);
-        console.log("name :" + tickets[i].name);
-        console.log("tripID :" + tickets[i].tripID);
-        console.log("seatNumber :" + tickets[i].seatNumber);
-        console.log("price :" + tickets[i].price);
-        console.log("destination :" + tickets[i].destination);
-        console.log("departure :" + tickets[i].departure);
-        console.log("departureTime :" + tickets[i].departureTime);
-        console.log("arrivalTime :" + tickets[i].arrivalTime);
-
+    if (tickets.length === 0) {
+        console.log("No tickets registered.");
+        return;
     }
-
-
+    // here we go through the tickets one by one
+    for (let i = 0; i < tickets.length; i++) {
+        details(tickets[i]);
+    }
 }
 
 function Cancelaticket() {
 
-    let ticketid = Number(prompt("enter the ticket ID to cancel it "))
+    let ticketid = Number(prompt("Enter the ticket ID to cancel: "));
+    if (!Number.isInteger(ticketid) || ticketid <= 0) {
+        console.log("Ticket ID must be a positive whole number.");
+        return;
+    }
 
-    let ticketFound = false // here we create a variable to check if the ticket id exist in the tickets array or not
+    let ticketFound = false // here we create a variable to check if the ticket ID exists in the tickets array or not
 
     for (let i = 0; i < tickets.length; i++) {
 
         if (tickets[i].id === ticketid) {
 
-            // here we compare if the ticket id exist 
+            // here we compare if the ticket ID exists 
             ticketFound = true;
             console.log("ticket found")
 
-
-
             // here we loop through the trips array to find the trip id of the ticket to increment the available seats by 1
-
 
             for (let j = 0; j < trips.length; j++) {
 
                 if (trips[j].id === tickets[i].tripID)
 
-
-
                 // here we compare if the trip id of the ticket exist in the trips array 
                 // to increment the available seats by 1
-                // its like we check the id of the trip mathces the trip id on the ticket   
+                // its like we check the id of the trip matches the trip id on the ticket   
                 {
                     trips[j].availableSeats++;
 
@@ -746,47 +712,41 @@ function Cancelaticket() {
 
                     console.log("ticket canceled")
                     tickets.splice(i, 1);
-                    break;
+                    return;
                 }
             }
         }
 
-
-
-
     }
 
     if (!ticketFound) {
-        console.log("ticket not found")
-
+        console.log("Ticket not found.");
+    } else {
+        console.log("Associated trip not found. Ticket was not canceled.");
     }
-
 
 }
 
-
-
-
 function Searchforaticket() {
-
-    let name = prompt("enter the ticket name to search for it ")
-    name = name.toLowerCase()
-
+    let name = prompt("Enter the passenger name: ").trim().toLowerCase();
+    if (name === "") {
+        console.log("Name cannot be empty.");
+        return;
+    }
+    let ticketFound = false;
     for (let i = 0; i < tickets.length; i++) {
-
-        if (tickets[i].name.toLowerCase() === name.toLowerCase()) {
-            console.log("ticket found")
-            console.log(tickets[i].id)
-
+        if (tickets[i].name.trim().toLowerCase() === name) {
+            ticketFound = true;
+            details(tickets[i]);
         }
-        else {
-            console.log("ticket not found")
-        }
+    }
+    // here we say not found only after checking all the tickets
+    if (!ticketFound) {
+        console.log("Ticket not found.");
     }
 }
 
 function Filtertrips() {
-
     let departurecity = prompt("Enter departure city: ").trim().toLowerCase();
     if (departurecity === "") {
         console.log("Departure city cannot be empty.");
@@ -802,13 +762,8 @@ function Filtertrips() {
     }
     if (!tripID) {
         console.log("No trips found for this departure city.");
-
-
     }
 }
-
-
-
 
 function Sorttrips() {
 
@@ -844,6 +799,7 @@ function Statistics() {
     console.log("Total revenue: " + totalRevenue + " DH")
 
     if (tickets.length === 0) {
+        console.log("No best-selling trip yet.");
         return;
     }
 
@@ -877,12 +833,4 @@ function Statistics() {
     }
 
 }
-
-
-
-
-
-
-
-
 
