@@ -771,17 +771,21 @@ function Searchforaticket() {
 
     function Searchforaticket() {
 
+        // here we ask the user to enter the ticket name to search for it in the tickets array
+
         let name = prompt("enter the ticket name to search for it ")
         name = name.toLowerCase()
         let found = false;
 
         for (let i = 0; i < tickets.length; i++) {
 
+            // here we loop through the tickets array to find the ticket by name and display its id if found
+
             if (tickets[i].name.toLowerCase() === name.toLowerCase()) {
                 console.log("ticket found")
                 console.log(tickets[i].id)
                 found = true;
-            }
+            }// here we compare if the name of the ticket exist in the tickets array
         }
 
         if (!found) {
@@ -795,10 +799,15 @@ function Filtertrips() {
     let departurecity = prompt("Enter departure city: ").trim().toLowerCase();
     if (departurecity === "") {
         console.log("Departure city cannot be empty.");
+        // if the user enter an empty string we print a message to the user and return from the function
+        // we use return to exit the function and not continue with the rest of the code
         return;
     }
     let tripID = false;
     for (let i = 0; i < trips.length; i++) {
+
+        // here we loop through the trips array to find the trips that match the departure city and display them to the user
+
         if (trips[i].departure.toLowerCase() === departurecity) {
             tripID = true;
             console.log("#" + trips[i].id + " " + trips[i].departure + " -> " +
@@ -817,7 +826,12 @@ function Filtertrips() {
 
 function Sorttrips() {
 
+    // here we use bubble sort to sort the trips array by price in ascending order
+
     for (let i = 0; i < trips.length - 1; i++) {
+
+        // we loop through the trips array to compare the price of each trip with the next trip and swap them if the price of the current trip is greater than the next trip
+
 
         for (let j = 0; j < trips.length - 1 - i; j++) {
 
@@ -828,6 +842,8 @@ function Sorttrips() {
             }
 
         }
+
+        // we use the -i in the inner loop to avoid comparing the last i elements that are already sorted
     }
 
     for (let i = 0; i < trips.length; i++) {
