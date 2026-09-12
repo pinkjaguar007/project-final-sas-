@@ -514,7 +514,7 @@ while (ongoing) {
             ongoing = false;
             break;
         default:
-
+            console.log("Invalid choice, please try again.")
     }
 }
 
@@ -769,17 +769,22 @@ function Cancelaticket() {
 
 function Searchforaticket() {
 
-    let name = prompt("enter the ticket name to search for it ")
-    name = name.toLowerCase()
+    function Searchforaticket() {
 
-    for (let i = 0; i < tickets.length; i++) {
+        let name = prompt("enter the ticket name to search for it ")
+        name = name.toLowerCase()
+        let found = false;
 
-        if (tickets[i].name.toLowerCase() === name.toLowerCase()) {
-            console.log("ticket found")
-            console.log(tickets[i].id)
+        for (let i = 0; i < tickets.length; i++) {
 
+            if (tickets[i].name.toLowerCase() === name.toLowerCase()) {
+                console.log("ticket found")
+                console.log(tickets[i].id)
+                found = true;
+            }
         }
-        else {
+
+        if (!found) {
             console.log("ticket not found")
         }
     }
